@@ -3,6 +3,7 @@ import Layout from '@/components/app-layout'
 import Button from '@/components/button'
 import Dialog from '@/components/dialog'
 import Input from '@/components/input'
+import { requestPost } from '@/utils/api'
 import './App.less'
 
 const { Header, Footer, Content } = Layout
@@ -21,16 +22,25 @@ const fullNameRules = [
   }
 ]
 
+const initialFormData = {
+  fullName: '',
+  email: '',
+  confirmEmail: ''
+}
+
 const App = () => {
   const formRef = useRef<any>([])
 
-  const [dialogVisible, setDialogVisible] = useState(true)
+  const [dialogVisible, setDialogVisible] = useState(false)
+  const [successDialogVisible, setSuccessDialogVisible] = useState(false)
+  const [requestLoading, setRequestLoading] = useState(false)
 
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    confirmEmail: ''
-  })
+  const [formData, setFormData] = useState(initialFormData)
+
+  const openFormDialog = useCallback(() => {
+    setFormData(initialFormData)
+    setDialogVisible(true)
+  }, [])
 
   const doSetFormData = useCallback((v: any) => {
     setFormData(data => ({
@@ -42,7 +52,23 @@ const App = () => {
   const onConfirm = useCallback(() => {
     const pass = formRef.current.map((item: any) => item.validateVal()).some((item: any) => item)
     if (pass) {
-      console.log(formData)
+      const params = {
+        name: formData.fullName,
+        email: formData.email
+      }
+      setRequestLoading(true)
+      requestPost({
+        url: 'https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth',
+        data: params
+      }).then(res => {
+        console.log(res)
+        if (res === 'Registered') {
+          setDialogVisible(false)
+          setSuccessDialogVisible(true)
+        }
+      }).finally(() => {
+        setRequestLoading(false)
+      })
     }
   }, [formData])
 
@@ -67,11 +93,13 @@ const App = () => {
             <div>to enjoy every day. </div>
           </div>
           <div className="hint">Be the first to know when we launch. </div>
-          <Button onClick={() => setDialogVisible(true)}>Request an invite</Button>
+          <Button onClick={openFormDialog}>Request an invite</Button>
           <Dialog
             title="Request an invite"
+            confirmText={requestLoading ? 'Sending, please wait...' : 'Send'}
             visible={dialogVisible}
             setVisible={setDialogVisible}
+            loading={requestLoading}
             onConfirm={onConfirm}
             onCancel={() => setDialogVisible(false)}
           >
@@ -105,6 +133,16 @@ const App = () => {
               type="text"
               setValue={(v: any) => doSetFormData({ confirmEmail: v })}
             />
+          </Dialog>
+          <Dialog
+            title="All done! "
+            confirmText="OK"
+            visible={successDialogVisible}
+            setVisible={setSuccessDialogVisible}
+            onConfirm={() => setSuccessDialogVisible(false)}
+            onCancel={() => setSuccessDialogVisible(false)}
+          >
+            <div>You will be one of the first to experience Broccoli & Co. when we launch. </div>
           </Dialog>
         </div>
       </Content>
