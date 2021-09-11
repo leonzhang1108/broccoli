@@ -36,9 +36,7 @@
     "typescript": "^4.3.2",
     "vite": "^2.5.4"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint"
-    }
+  "hooks": {
+    "pre-commit": "lint-staged"
   }
 }
