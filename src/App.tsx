@@ -1,31 +1,32 @@
-import React, { useState, useCallback, useRef, useMemo } from 'react'
-import Layout from '@/components/app-layout'
-import Button from '@/components/button'
-import Dialog from '@/components/dialog'
-import Input from '@/components/input'
-import { requestPost } from '@/utils/api'
-import './App.less'
+import React, { useState, useCallback, useRef, useMemo } from "react"
+import Layout from "@/components/app-layout"
+import Button from "@/components/button"
+import Dialog from "@/components/dialog"
+import Input from "@/components/input"
+import { requestPost } from "@/utils/api"
+import "./App.less"
 
 const { Header, Footer, Content } = Layout
 
 const emailRules = [
   {
-    pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-    msg: 'Please enter valid email address'
-  }
+    pattern:
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    msg: "Please enter valid email address",
+  },
 ]
 
 const fullNameRules = [
   {
     pattern: /^.{3,}$/,
-    msg: 'Full name must be longer then 2 characters'
-  }
+    msg: "Full name must be longer then 2 characters",
+  },
 ]
 
 const initialFormData = {
-  fullName: '',
-  email: '',
-  confirmEmail: ''
+  fullName: "",
+  email: "",
+  confirmEmail: "",
 }
 
 const App = () => {
@@ -43,41 +44,45 @@ const App = () => {
   }, [])
 
   const doSetFormData = useCallback((v: any) => {
-    setFormData(data => ({
+    setFormData((data) => ({
       ...data,
       ...v,
     }))
   }, [])
 
   const onConfirm = useCallback(() => {
-    const pass = formRef.current.map((item: any) => item.validateVal()).some((item: any) => item)
+    const pass = formRef.current
+      .map((item: any) => item.validateVal())
+      .some((item: any) => item)
     if (pass) {
       const params = {
         name: formData.fullName,
-        email: formData.email
+        email: formData.email,
       }
       setRequestLoading(true)
       requestPost({
-        url: 'https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth',
-        data: params
-      }).then(res => {
-        console.log(res)
-        if (res === 'Registered') {
-          setDialogVisible(false)
-          setSuccessDialogVisible(true)
-        }
-      }).finally(() => {
-        setRequestLoading(false)
+        url: "https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth",
+        data: params,
       })
+        .then((res) => {
+          console.log(res)
+          if (res === "Registered") {
+            setDialogVisible(false)
+            setSuccessDialogVisible(true)
+          }
+        })
+        .finally(() => {
+          setRequestLoading(false)
+        })
     }
   }, [formData])
 
   const confirmEmailRules = useMemo(() => {
     return [
       {
-        pattern: RegExp(`^${formData.email}$`, 'i'),
-        msg: 'Please confirm your email address'
-      }
+        pattern: RegExp(`^${formData.email}$`, "i"),
+        msg: "Please confirm your email address",
+      },
     ]
   }, [formData.email])
 
@@ -96,7 +101,7 @@ const App = () => {
           <Button onClick={openFormDialog}>Request an invite</Button>
           <Dialog
             title="Request an invite"
-            confirmText={requestLoading ? 'Sending, please wait...' : 'Send'}
+            confirmText={requestLoading ? "Sending, please wait..." : "Send"}
             visible={dialogVisible}
             setVisible={setDialogVisible}
             loading={requestLoading}
@@ -104,7 +109,7 @@ const App = () => {
             onCancel={() => setDialogVisible(false)}
           >
             <Input
-              ref={el => (formRef.current[0] = el)}
+              ref={(el) => (formRef.current[0] = el)}
               value={formData.fullName}
               required
               requiredMsg="Please enter your full name"
@@ -114,7 +119,7 @@ const App = () => {
               setValue={(v: any) => doSetFormData({ fullName: v })}
             />
             <Input
-              ref={el => (formRef.current[1] = el)}
+              ref={(el) => (formRef.current[1] = el)}
               value={formData.email}
               required
               requiredMsg="Please enter your email address"
@@ -124,7 +129,7 @@ const App = () => {
               setValue={(v: any) => doSetFormData({ email: v })}
             />
             <Input
-              ref={el => (formRef.current[2] = el)}
+              ref={(el) => (formRef.current[2] = el)}
               value={formData.confirmEmail}
               required
               requiredMsg="Please enter your email address"
@@ -142,7 +147,10 @@ const App = () => {
             onConfirm={() => setSuccessDialogVisible(false)}
             onCancel={() => setSuccessDialogVisible(false)}
           >
-            <div>You will be one of the first to experience Broccoli & Co. when we launch. </div>
+            <div>
+              You will be one of the first to experience Broccoli & Co. when we
+              launch.{" "}
+            </div>
           </Dialog>
         </div>
       </Content>

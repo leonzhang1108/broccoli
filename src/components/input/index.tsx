@@ -1,13 +1,18 @@
-import React, { useState, forwardRef, useCallback, useImperativeHandle } from 'react'
-import './index.less'
+import React, {
+  useState,
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+} from "react"
+import "./index.less"
 
 const labelClick = (e: any) => {
-  const input = (e.target.parentNode.getElementsByTagName('input') || [])[0]
+  const input = (e.target.parentNode.getElementsByTagName("input") || [])[0]
   input && input.focus()
 }
 
 interface rule {
-  pattern: RegExp,
+  pattern: RegExp
   msg: string
 }
 
@@ -21,18 +26,24 @@ interface InputState {
   rules?: rule[]
 }
 
-
 const Input = (props: InputState, ref: any) => {
-
-  const { value, type, setValue, placeholder, required, requiredMsg = '', rules = [] } = props
-  const [errorMsg, setErrorMsg] = useState('')
+  const {
+    value,
+    type,
+    setValue,
+    placeholder,
+    required,
+    requiredMsg = "",
+    rules = [],
+  } = props
+  const [errorMsg, setErrorMsg] = useState("")
 
   const validate = useCallback((v: string, rules: any) => {
     if (required && !v) {
-      setErrorMsg(requiredMsg || 'please enter value')
+      setErrorMsg(requiredMsg || "please enter value")
       return false
     }
-  
+
     if (rules.length) {
       const pass = rules.some((rule: rule) => {
         const { pattern, msg } = rule
@@ -44,25 +55,32 @@ const Input = (props: InputState, ref: any) => {
         }
       })
       if (pass) {
-        setErrorMsg('')
+        setErrorMsg("")
         return true
       } else {
         return false
       }
     } else {
-      setErrorMsg('')
+      setErrorMsg("")
       return true
     }
   }, [])
 
-  useImperativeHandle(ref, () => ({
-    validateVal: () => validate(value, rules)
-  }), [rules])
+  useImperativeHandle(
+    ref,
+    () => ({
+      validateVal: () => validate(value, rules),
+    }),
+    [rules]
+  )
 
-  const doSetValue = useCallback((v: any) => {
-    setValue(v)
-    validate(v, rules)
-  }, [rules])
+  const doSetValue = useCallback(
+    (v: any) => {
+      setValue(v)
+      validate(v, rules)
+    },
+    [rules]
+  )
 
   return (
     <div className="input-wrapper">
@@ -72,24 +90,22 @@ const Input = (props: InputState, ref: any) => {
         value={value}
         placeholder={placeholder}
         // 禁止粘贴
-        onPaste={e => e.preventDefault()}
-        onChange={v => {
+        onPaste={(e) => e.preventDefault()}
+        onChange={(v) => {
           doSetValue(v.target.value)
         }}
       />
       <label onClick={labelClick}>{placeholder}</label>
       {errorMsg ? <div className="error">{errorMsg}</div> : null}
-      {
-        value ? (
-          <i
-            className="icon icon-cross"
-            onClick={(e) => {
-              doSetValue('')
-              labelClick(e)
-            }}
-          />
-        ) : null
-      }
+      {value ? (
+        <i
+          className="icon icon-cross"
+          onClick={(e) => {
+            doSetValue("")
+            labelClick(e)
+          }}
+        />
+      ) : null}
     </div>
   )
 }
