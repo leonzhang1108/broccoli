@@ -53,7 +53,7 @@ const Input = (props: InputState, ref: any) => {
     }
 
     if (rules.length) {
-      const res = rules.some((rule: rule) => {
+      const notMatch = rules.some((rule: rule) => {
         const { pattern, msg = 'please enter value', exact } = rule
   
         // 正则匹配
@@ -71,11 +71,11 @@ const Input = (props: InputState, ref: any) => {
         return false
       })
 
-      if (!res) {
+      if (!notMatch) {
         setErrorMsg('')
       }
 
-      return !res
+      return !notMatch
     } else {
       setErrorMsg('')
       return true

@@ -25,6 +25,7 @@ const Dialog = (props: DialogProps) => {
     confirmText,
     errorMsg,
   } = props
+
   return visible ? (
     <div className="dialog-wrapper">
       <div className="dialog-content">
@@ -39,6 +40,11 @@ const Dialog = (props: DialogProps) => {
           </Button>
           {errorMsg ? <div className="dialog-error">{errorMsg}</div> : null}
         </div>
+        {
+          loading ? (<div className="loading-mask">
+            <span className="icon icon-loading"></span>
+          </div>) : null
+        }
       </div>
     </div>
   ) : null
