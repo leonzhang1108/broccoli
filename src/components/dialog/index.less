@@ -6,15 +6,25 @@
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: showMask .3s ease forwards;
+
+  &.closing {
+    animation: hideMask .3s ease forwards;
+
+    .dialog-content {
+      animation: hideDialog .3s ease forwards;
+    }
+  }
 
   .dialog-content {
-    background-color: #fff;
+    background-color: #e0e5ec;
     max-width: 90%;
-    // position: relative;
+    position: relative;
+    border-radius: 1rem;
+    animation: showDialog .3s ease forwards;
 
     .dialog-title-wrapper {
       display: flex;
@@ -32,6 +42,7 @@
       .icon {
         position: absolute;
         right: @dialog-padding;
+        cursor: pointer;
       }
 
       &:after {
@@ -72,6 +83,8 @@
       justify-content: center;
       align-items: center;
       background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 1rem;
+
       .icon {
         animation: spin 2s linear infinite;
         font-size: 3rem;
@@ -81,6 +94,51 @@
 }
 
 @keyframes spin {
-  0%   { transform: rotate(0); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes showDialog {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes showMask {
+  0% {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes hideDialog {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes hideMask {
+  0% {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  100% {
+    background-color: rgba(0, 0, 0, 0);
+  }
 }

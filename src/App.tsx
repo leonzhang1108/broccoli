@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useMemo } from "react"
+import React, { useState, useCallback, useRef, useMemo, useEffect } from "react"
 import Layout from "@/components/app-layout"
 import Button from "@/components/button"
 import Dialog from "@/components/dialog"
@@ -27,7 +27,7 @@ const fullNameRules = [
   },
   {
     pattern: /^.{3,}$/,
-    msg: "Full name must be longer then 2 characters",
+    msg: "Full name must be longer than 2 characters",
   },
 ]
 
@@ -46,12 +46,14 @@ const App = () => {
   const [errorMsg, setErrorMsg] = useState<any>("")
   const [formData, setFormData] = useState(initialFormData)
 
+  // 打开 invite 对话框
   const openFormDialog = useCallback(() => {
     setFormData(initialFormData)
     setErrorMsg("")
     setDialogVisible(true)
   }, [])
 
+  // 设置 form 表单值
   const doSetFormData = useCallback((v: any) => {
     setFormData((data) => ({
       ...data,
@@ -59,6 +61,7 @@ const App = () => {
     }))
   }, [])
 
+  // 确认发送
   const onConfirm = useCallback(() => {
     const pass = formRef.current
       .map((item: any) => item.validateVal())
@@ -92,6 +95,7 @@ const App = () => {
     }
   }, [formData])
 
+  // 验证 emial 规则
   const confirmEmailRules = useMemo(() => {
     return [
       {
@@ -104,6 +108,28 @@ const App = () => {
       },
     ]
   }, [formData.email])
+
+  // 绑定回车事件
+  useEffect(() => {
+    document.onkeydown = null
+    if (dialogVisible) {
+      document.onkeydown = function (e: any) {
+        if (e.keyCode === 13) {
+          onConfirm()
+        }
+      }
+    }
+    if (successDialogVisible) {
+      document.onkeydown = function (e: any) {
+        if (e.keyCode === 13) {
+          setSuccessDialogVisible(false)
+        }
+      }
+    }
+    return () => {
+      document.onkeydown = null
+    }
+  }, [formData, dialogVisible, successDialogVisible])
 
   return (
     <Layout className="app-wrapper">

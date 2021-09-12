@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import Button from "@/components/button"
+import classnames from "classnames"
 import "./index.less"
 
 interface DialogProps {
@@ -26,8 +27,24 @@ const Dialog = (props: DialogProps) => {
     errorMsg,
   } = props
 
-  return visible ? (
-    <div className="dialog-wrapper">
+  const [isClosing, setIsClosing] = useState(false)
+  const [innerVisible, setInnerVisible] = useState(false)
+
+  useEffect(() => {
+    if (visible) {
+      setIsClosing(false)
+      setInnerVisible(visible)
+    } else {
+      setIsClosing(true)
+      setTimeout(() => {
+        setInnerVisible(visible)
+        setInnerVisible(false)
+      }, 300)
+    }
+  }, [visible])
+
+  return innerVisible ? (
+    <div className={classnames("dialog-wrapper", { closing: isClosing })}>
       <div className="dialog-content">
         <div className="dialog-title-wrapper">
           <span className="dialog-title">{title}</span>
