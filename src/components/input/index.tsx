@@ -28,13 +28,7 @@ interface InputState {
 }
 
 const Input = (props: InputState, ref: any) => {
-  const {
-    value,
-    type,
-    setValue,
-    placeholder,
-    rules = [],
-  } = props
+  const { value, type, setValue, placeholder, rules = [] } = props
   const [errorMsg, setErrorMsg] = useState("")
 
   const { required, msg: requiredMeg }: any = useMemo(() => {
@@ -46,16 +40,15 @@ const Input = (props: InputState, ref: any) => {
   }, [rules])
 
   const validate = useCallback((v: string, rules: any, required: boolean) => {
-
     if (required && !v) {
-      setErrorMsg(requiredMeg || 'please enter value')
+      setErrorMsg(requiredMeg || "please enter value")
       return false
     }
 
     if (rules.length) {
       const notMatch = rules.some((rule: rule) => {
-        const { pattern, msg = 'please enter value', exact } = rule
-  
+        const { pattern, msg = "please enter value", exact } = rule
+
         // 正则匹配
         if (pattern && !pattern.test(v)) {
           setErrorMsg(msg)
@@ -72,12 +65,12 @@ const Input = (props: InputState, ref: any) => {
       })
 
       if (!notMatch) {
-        setErrorMsg('')
+        setErrorMsg("")
       }
 
       return !notMatch
     } else {
-      setErrorMsg('')
+      setErrorMsg("")
       return true
     }
   }, [])

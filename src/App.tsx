@@ -11,7 +11,7 @@ const { Header, Footer, Content } = Layout
 const emailRules = [
   {
     required: true,
-    msg: 'Please enter your email address'
+    msg: "Please enter your email address",
   },
   {
     pattern:
@@ -23,7 +23,7 @@ const emailRules = [
 const fullNameRules = [
   {
     required: true,
-    msg: 'Please enter your full name'
+    msg: "Please enter your full name",
   },
   {
     pattern: /^.{3,}$/,
@@ -43,12 +43,12 @@ const App = () => {
   const [dialogVisible, setDialogVisible] = useState(false)
   const [successDialogVisible, setSuccessDialogVisible] = useState(false)
   const [requestLoading, setRequestLoading] = useState(false)
-  const [errorMsg, setErrorMsg] = useState<any>('')
+  const [errorMsg, setErrorMsg] = useState<any>("")
   const [formData, setFormData] = useState(initialFormData)
 
   const openFormDialog = useCallback(() => {
     setFormData(initialFormData)
-    setErrorMsg('')
+    setErrorMsg("")
     setDialogVisible(true)
   }, [])
 
@@ -96,7 +96,7 @@ const App = () => {
     return [
       {
         required: true,
-        msg: 'Please enter your email address'
+        msg: "Please enter your email address",
       },
       {
         exact: formData.email,
@@ -161,8 +161,9 @@ const App = () => {
             onConfirm={() => setSuccessDialogVisible(false)}
             onCancel={() => setSuccessDialogVisible(false)}
           >
-            <div style={{ textAlign: 'center' }}>
-              You will be one of the first to experience Broccoli & Co. when we launch.
+            <div style={{ textAlign: "center" }}>
+              You will be one of the first to experience Broccoli & Co. when we
+              launch.
             </div>
           </Dialog>
         </div>

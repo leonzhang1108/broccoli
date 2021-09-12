@@ -40,11 +40,11 @@ const Dialog = (props: DialogProps) => {
           </Button>
           {errorMsg ? <div className="dialog-error">{errorMsg}</div> : null}
         </div>
-        {
-          loading ? (<div className="loading-mask">
+        {loading ? (
+          <div className="loading-mask">
             <span className="icon icon-loading"></span>
-          </div>) : null
-        }
+          </div>
+        ) : null}
       </div>
     </div>
   ) : null

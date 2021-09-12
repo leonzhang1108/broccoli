@@ -16,7 +16,6 @@ const Layout = (props: LayoutProps) => {
   )
 }
 
-
 Layout.Header = (props: LayoutProps) => {
   const { children, className } = props
   return (

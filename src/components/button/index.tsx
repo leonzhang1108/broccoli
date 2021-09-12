@@ -4,7 +4,7 @@ import "./index.less"
 
 interface ButtonProps {
   children: React.ReactChild
-  onClick: Function
+  onClick: any
   className?: string
   loading?: boolean
 }
