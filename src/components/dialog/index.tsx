@@ -2,7 +2,19 @@ import React from "react"
 import Button from "@/components/button"
 import "./index.less"
 
-const Dialog = (props: any) => {
+interface DialogProps {
+  children: React.ReactNode | Element
+  title: string
+  onConfirm: any
+  onCancel: any
+  setVisible: any
+  visible: boolean
+  loading?: boolean
+  confirmText: string
+  errorMsg?: string
+}
+
+const Dialog = (props: DialogProps) => {
   const {
     children,
     title,
@@ -11,12 +23,13 @@ const Dialog = (props: any) => {
     visible,
     loading,
     confirmText,
+    errorMsg,
   } = props
   return visible ? (
     <div className="dialog-wrapper">
       <div className="dialog-content">
-        <div className="dialog-title">
-          <span>{title}</span>
+        <div className="dialog-title-wrapper">
+          <span className="dialog-title">{title}</span>
           <span className="icon icon-cross" onClick={onCancel} />
         </div>
         <div className="dialog-content-wrapper">{children}</div>
@@ -24,6 +37,7 @@ const Dialog = (props: any) => {
           <Button loading={loading} className="dialog-send" onClick={onConfirm}>
             {confirmText || "Confirm"}
           </Button>
+          {errorMsg ? <div className="dialog-error">{errorMsg}</div> : null}
         </div>
       </div>
     </div>

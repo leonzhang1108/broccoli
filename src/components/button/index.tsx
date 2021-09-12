@@ -2,7 +2,14 @@ import React, { useCallback } from "react"
 import classnames from "classnames"
 import "./index.less"
 
-const Button = (props: any) => {
+interface ButtonProps {
+  children: React.ReactChild
+  onClick: Function
+  className?: string
+  loading?: boolean
+}
+
+const Button = (props: ButtonProps) => {
   const { children, onClick, className, loading } = props
 
   const doOnClick = useCallback(() => {

@@ -3,6 +3,7 @@ import React, {
   forwardRef,
   useCallback,
   useImperativeHandle,
+  useMemo,
 } from "react"
 import "./index.less"
 
@@ -12,7 +13,9 @@ const labelClick = (e: any) => {
 }
 
 interface rule {
-  pattern: RegExp
+  pattern?: RegExp
+  exact?: string
+  required?: boolean
   msg: string
 }
 
@@ -21,8 +24,6 @@ interface InputState {
   type: string
   setValue: any
   placeholder?: string
-  required: boolean
-  requiredMsg?: string
   rules?: rule[]
 }
 
@@ -32,36 +33,51 @@ const Input = (props: InputState, ref: any) => {
     type,
     setValue,
     placeholder,
-    required,
-    requiredMsg = "",
     rules = [],
   } = props
   const [errorMsg, setErrorMsg] = useState("")
 
-  const validate = useCallback((v: string, rules: any) => {
+  const { required, msg: requiredMeg }: any = useMemo(() => {
+    return rules.find((item) => item.required)
+  }, [rules])
+
+  const innerRules = useMemo(() => {
+    return rules.filter((item) => !item.required)
+  }, [rules])
+
+  const validate = useCallback((v: string, rules: any, required: boolean) => {
+
     if (required && !v) {
-      setErrorMsg(requiredMsg || "please enter value")
+      setErrorMsg(requiredMeg || 'please enter value')
       return false
     }
 
     if (rules.length) {
-      const pass = rules.some((rule: rule) => {
-        const { pattern, msg } = rule
-        if (pattern.test(v)) {
-          return true
-        } else {
+      const res = rules.some((rule: rule) => {
+        const { pattern, msg = 'please enter value', exact } = rule
+  
+        // 正则匹配
+        if (pattern && !pattern.test(v)) {
           setErrorMsg(msg)
-          return false
+          return true
         }
-      })
-      if (pass) {
-        setErrorMsg("")
-        return true
-      } else {
+
+        // 完全匹配
+        if (exact && exact !== v) {
+          setErrorMsg(msg)
+          return true
+        }
+
         return false
+      })
+
+      if (!res) {
+        setErrorMsg('')
       }
+
+      return !res
     } else {
-      setErrorMsg("")
+      setErrorMsg('')
       return true
     }
   }, [])
@@ -69,17 +85,17 @@ const Input = (props: InputState, ref: any) => {
   useImperativeHandle(
     ref,
     () => ({
-      validateVal: () => validate(value, rules),
+      validateVal: () => validate(value, innerRules, required),
     }),
-    [rules]
+    [innerRules, required]
   )
 
   const doSetValue = useCallback(
     (v: any) => {
       setValue(v)
-      validate(v, rules)
+      validate(v, innerRules, required)
     },
-    [rules]
+    [innerRules, required]
   )
 
   return (

@@ -10,6 +10,10 @@ const { Header, Footer, Content } = Layout
 
 const emailRules = [
   {
+    required: true,
+    msg: 'Please enter your email address'
+  },
+  {
     pattern:
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     msg: "Please enter valid email address",
@@ -17,6 +21,10 @@ const emailRules = [
 ]
 
 const fullNameRules = [
+  {
+    required: true,
+    msg: 'Please enter your full name'
+  },
   {
     pattern: /^.{3,}$/,
     msg: "Full name must be longer then 2 characters",
@@ -35,11 +43,12 @@ const App = () => {
   const [dialogVisible, setDialogVisible] = useState(false)
   const [successDialogVisible, setSuccessDialogVisible] = useState(false)
   const [requestLoading, setRequestLoading] = useState(false)
-
+  const [errorMsg, setErrorMsg] = useState<any>('')
   const [formData, setFormData] = useState(initialFormData)
 
   const openFormDialog = useCallback(() => {
     setFormData(initialFormData)
+    setErrorMsg('')
     setDialogVisible(true)
   }, [])
 
@@ -53,7 +62,7 @@ const App = () => {
   const onConfirm = useCallback(() => {
     const pass = formRef.current
       .map((item: any) => item.validateVal())
-      .some((item: any) => item)
+      .every((item: any) => item)
     if (pass) {
       const params = {
         name: formData.fullName,
@@ -65,10 +74,16 @@ const App = () => {
         data: params,
       })
         .then((res) => {
-          console.log(res)
           if (res === "Registered") {
             setDialogVisible(false)
             setSuccessDialogVisible(true)
+          }
+        })
+        .catch((error) => {
+          if (error instanceof Error) {
+            setErrorMsg(error?.message)
+          } else if (error instanceof XMLHttpRequest) {
+            setErrorMsg(error?.response?.errorMessage)
           }
         })
         .finally(() => {
@@ -80,7 +95,11 @@ const App = () => {
   const confirmEmailRules = useMemo(() => {
     return [
       {
-        pattern: RegExp(`^${formData.email}$`, "i"),
+        required: true,
+        msg: 'Please enter your email address'
+      },
+      {
+        exact: formData.email,
         msg: "Please confirm your email address",
       },
     ]
@@ -107,12 +126,11 @@ const App = () => {
             loading={requestLoading}
             onConfirm={onConfirm}
             onCancel={() => setDialogVisible(false)}
+            errorMsg={errorMsg}
           >
             <Input
               ref={(el) => (formRef.current[0] = el)}
               value={formData.fullName}
-              required
-              requiredMsg="Please enter your full name"
               rules={fullNameRules}
               placeholder="Full name"
               type="text"
@@ -121,8 +139,6 @@ const App = () => {
             <Input
               ref={(el) => (formRef.current[1] = el)}
               value={formData.email}
-              required
-              requiredMsg="Please enter your email address"
               rules={emailRules}
               placeholder="Email"
               type="text"
@@ -131,10 +147,8 @@ const App = () => {
             <Input
               ref={(el) => (formRef.current[2] = el)}
               value={formData.confirmEmail}
-              required
-              requiredMsg="Please enter your email address"
               rules={confirmEmailRules}
-              placeholder="Confirm Email"
+              placeholder="Confirm email"
               type="text"
               setValue={(v: any) => doSetFormData({ confirmEmail: v })}
             />
@@ -147,9 +161,8 @@ const App = () => {
             onConfirm={() => setSuccessDialogVisible(false)}
             onCancel={() => setSuccessDialogVisible(false)}
           >
-            <div>
-              You will be one of the first to experience Broccoli & Co. when we
-              launch.{" "}
+            <div style={{ textAlign: 'center' }}>
+              You will be one of the first to experience Broccoli & Co. when we launch.
             </div>
           </Dialog>
         </div>

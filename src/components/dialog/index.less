@@ -1,3 +1,5 @@
+@dialog-padding: 1.5rem;
+
 .dialog-wrapper {
   position: absolute;
   top: 0;
@@ -8,24 +10,53 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
   .dialog-content {
     background-color: #fff;
     max-width: 90%;
-    .dialog-title {
+
+    .dialog-title-wrapper {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0.5rem;
+      justify-content: center;
+      padding: @dialog-padding;
+      position: relative;
+
+      .dialog-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      .icon {
+        position: absolute;
+        right: @dialog-padding;
+      }
+
+      &:after {
+        content: '';
+        height: 1px;
+        width: 2rem;
+        background-color: #000;
+        position: absolute;
+        bottom: 0;
+      }
     }
+
     .dialog-content-wrapper {
-      padding: 0.5rem;
+      padding: @dialog-padding;
     }
+
     .dialog-btn-wrapper {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.5rem;
+      padding: @dialog-padding;
+
       .dialog-send {
-        width: 100%;
+        text-align: center;
+      }
+
+      .dialog-error {
+        color: red;
+        margin-top: 0.5rem;
         text-align: center;
       }
     }
