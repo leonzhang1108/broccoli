@@ -43,6 +43,20 @@ const Dialog = (props: DialogProps) => {
     }
   }, [visible])
 
+  // 绑定回车按钮
+  useEffect(() => {
+    if (visible && !loading) {
+      document.onkeydown = function (e: any) {
+        if (e.keyCode === 13) {
+          onConfirm && onConfirm()
+        }
+      }
+    }
+    return () => {
+      document.onkeydown = null
+    }
+  }, [visible, loading, onConfirm])
+
   return innerVisible ? (
     <div className={classnames("dialog-wrapper", { closing: isClosing })}>
       <div className="dialog-content">

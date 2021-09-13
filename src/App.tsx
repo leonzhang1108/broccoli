@@ -51,6 +51,9 @@ const App = () => {
     setFormData(initialFormData)
     setErrorMsg("")
     setDialogVisible(true)
+    setTimeout(() => {
+      ;((formRef?.current || [])[0] || {}).ref?.current?.focus()
+    }, 300)
   }, [])
 
   // 设置 form 表单值
@@ -64,7 +67,7 @@ const App = () => {
   // 确认发送
   const onConfirm = useCallback(() => {
     const pass = formRef.current
-      .map((item: any) => item.validateVal())
+      .map((item: any) => item?.validateVal())
       .every((item: any) => item)
     if (pass) {
       const params = {
@@ -111,25 +114,18 @@ const App = () => {
 
   // 绑定回车事件
   useEffect(() => {
-    document.onkeydown = null
-    if (dialogVisible) {
+    if (!dialogVisible && !successDialogVisible) {
+      // 回车打开 form 对话框
       document.onkeydown = function (e: any) {
         if (e.keyCode === 13) {
-          onConfirm()
-        }
-      }
-    }
-    if (successDialogVisible) {
-      document.onkeydown = function (e: any) {
-        if (e.keyCode === 13) {
-          setSuccessDialogVisible(false)
+          openFormDialog()
         }
       }
     }
     return () => {
       document.onkeydown = null
     }
-  }, [formData, dialogVisible, successDialogVisible])
+  }, [dialogVisible, successDialogVisible, requestLoading])
 
   return (
     <Layout className="app-wrapper">

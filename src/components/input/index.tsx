@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useImperativeHandle,
   useMemo,
+  useRef,
 } from "react"
 import "./index.less"
 
@@ -29,6 +30,7 @@ interface InputState {
 
 const Input = (props: InputState, ref: any) => {
   const { value, type, setValue, placeholder, rules = [] } = props
+  const inputRef = useRef<any>()
   const [errorMsg, setErrorMsg] = useState("")
 
   const { required, msg: requiredMeg }: any = useMemo(() => {
@@ -79,6 +81,7 @@ const Input = (props: InputState, ref: any) => {
     ref,
     () => ({
       validateVal: () => validate(value, innerRules, required),
+      ref: inputRef,
     }),
     [innerRules, required]
   )
@@ -94,6 +97,7 @@ const Input = (props: InputState, ref: any) => {
   return (
     <div className="input-wrapper">
       <input
+        ref={inputRef}
         type={type}
         required={required}
         value={value}
