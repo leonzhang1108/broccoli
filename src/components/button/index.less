@@ -6,13 +6,22 @@
   font-weight: 500;
   background-color: #ececec;
   cursor: pointer;
-  transition: all 0.3s ease;
   position: relative;
-  box-shadow: inset 2px 2px 2px 0px rgb(255 255 255 / 50%), 7px 7px 20px 0px rgb(0 0 0 / 10%), 4px 4px 5px 0px rgb(0 0 0 / 10%);
+  box-shadow: inset 1px 1px 1px 0px rgb(255 255 255 / 50%), 2px 2px 2px 0px rgb(0 0 0 / 10%);
   outline: none;
+  font-size: 1.05rem;
+  line-height: 1rem;
+
+  &:active {
+    box-shadow: 1px 1px 1px 0px rgb(255 255 255 / 50%), inset 2px 2px 2px 0px rgb(0 0 0 / 10%);
+    font-size: 1rem;
+    line-height: 1rem;
+  }
+
   &:focus {
     background: none;
   }
+
   &.loading {
     opacity: 0.3;
   }
