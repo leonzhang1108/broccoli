@@ -1,4 +1,4 @@
 semi: false
-singleQuote: false
+singleQuote: true
 proseWrap: "preserve"
 tabWidth: 2

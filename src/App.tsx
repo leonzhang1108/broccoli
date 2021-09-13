@@ -1,49 +1,49 @@
-import React, { useState, useCallback, useRef, useMemo, useEffect } from "react"
-import Layout from "@/components/app-layout"
-import Button from "@/components/button"
-import Dialog from "@/components/dialog"
-import Input from "@/components/input"
-import { request } from "@/utils/api"
-import { bindKeyDown } from "@/utils"
-import "./App.less"
+import React, { useState, useCallback, useRef, useMemo, useEffect } from 'react'
+import Layout from '@/components/app-layout'
+import Button from '@/components/button'
+import Dialog from '@/components/dialog'
+import Input from '@/components/input'
+import { request } from '@/utils/api'
+import { bindKeyDown } from '@/utils'
+import './App.less'
 
 const { Header, Footer, Content } = Layout
 
 const emailRules = [
   {
     required: true,
-    msg: "Please enter your email address",
+    msg: 'Please enter your email address',
   },
   {
     pattern:
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-    msg: "Please enter valid email address",
+    msg: 'Please enter valid email address',
   },
   {
     max: 50,
-    msg: "Your email address is too long",
+    msg: 'Your email address is too long',
   },
 ]
 
 const fullNameRules = [
   {
     required: true,
-    msg: "Please enter your full name",
+    msg: 'Please enter your full name',
   },
   {
     pattern: /^.{3,}$/,
-    msg: "Full name needs to be least 3 characters",
+    msg: 'Full name needs to be least 3 characters',
   },
   {
     max: 25,
-    msg: "Your name is too long",
+    msg: 'Your name is too long',
   },
 ]
 
 const initialFormData = {
-  fullName: "",
-  email: "",
-  confirmEmail: "",
+  fullName: '',
+  email: '',
+  confirmEmail: '',
 }
 
 const App = () => {
@@ -52,13 +52,13 @@ const App = () => {
   const [dialogVisible, setDialogVisible] = useState(false)
   const [successDialogVisible, setSuccessDialogVisible] = useState(false)
   const [requestLoading, setRequestLoading] = useState(false)
-  const [errorMsg, setErrorMsg] = useState<any>("")
+  const [errorMsg, setErrorMsg] = useState<any>('')
   const [formData, setFormData] = useState(initialFormData)
 
   // 打开 invite 对话框
   const openFormDialog = useCallback(() => {
     setFormData(initialFormData)
-    setErrorMsg("")
+    setErrorMsg('')
     setDialogVisible(true)
     setTimeout(() => {
       ;((formRef?.current || [])[0] || {}).ref?.current?.focus()
@@ -90,12 +90,12 @@ const App = () => {
       }
       setRequestLoading(true)
       request({
-        url: "https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth",
+        url: 'https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth',
         data: params,
-        method: "POST",
+        method: 'POST',
       })
         .then((res: any) => {
-          if (res === "Registered") {
+          if (res === 'Registered') {
             setDialogVisible(false)
             setSuccessDialogVisible(true)
           }
@@ -118,15 +118,15 @@ const App = () => {
     return [
       {
         required: true,
-        msg: "Please enter your email address",
+        msg: 'Please enter your email address',
       },
       {
         exact: formData.email,
-        msg: "Please confirm your email address",
+        msg: 'Please confirm your email address',
       },
       {
         max: 50,
-        msg: "Your email address is too long",
+        msg: 'Your email address is too long',
       },
     ]
   }, [formData.email])
@@ -164,7 +164,7 @@ const App = () => {
           <Button onClick={openFormDialog}>Request an invite</Button>
           <Dialog
             title="Request an invite"
-            confirmText={requestLoading ? "Sending, please wait..." : "Send"}
+            confirmText={requestLoading ? 'Sending, please wait...' : 'Send'}
             visible={dialogVisible}
             setVisible={setDialogVisible}
             loading={requestLoading}
@@ -205,7 +205,7 @@ const App = () => {
             onConfirm={() => setSuccessDialogVisible(false)}
             onCancel={() => setSuccessDialogVisible(false)}
           >
-            <div style={{ textAlign: "center", width: "20rem" }}>
+            <div style={{ textAlign: 'center', width: '20rem' }}>
               You will be one of the first to experience Broccoli & Co. when we
               launch.
             </div>

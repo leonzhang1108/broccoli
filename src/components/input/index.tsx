@@ -5,11 +5,11 @@ import React, {
   useImperativeHandle,
   useMemo,
   useRef,
-} from "react"
-import "./index.less"
+} from 'react'
+import './index.less'
 
 const labelClick = (e: any) => {
-  const input = (e.target.parentNode.getElementsByTagName("input") || [])[0]
+  const input = (e.target.parentNode.getElementsByTagName('input') || [])[0]
   input && input.focus()
 }
 
@@ -33,7 +33,7 @@ interface InputState {
 const Input = (props: InputState, ref: any) => {
   const { value, type, setValue, placeholder, rules = [] } = props
   const inputRef = useRef<any>()
-  const [errorMsg, setErrorMsg] = useState("")
+  const [errorMsg, setErrorMsg] = useState('')
 
   const { required, msg: requiredMeg }: any = useMemo(() => {
     return rules.find((item) => item.required)
@@ -45,13 +45,13 @@ const Input = (props: InputState, ref: any) => {
 
   const validate = useCallback((v: string, rules: any, required: boolean) => {
     if (required && !v) {
-      setErrorMsg(requiredMeg || "please enter value")
+      setErrorMsg(requiredMeg || 'please enter value')
       return false
     }
 
     if (rules.length) {
       const notMatch = rules.some((rule: rule) => {
-        const { pattern, msg = "please enter value", exact, max, min } = rule
+        const { pattern, msg = 'please enter value', exact, max, min } = rule
 
         // 正则匹配
         if (pattern && !pattern.test(v)) {
@@ -81,12 +81,12 @@ const Input = (props: InputState, ref: any) => {
       })
 
       if (!notMatch) {
-        setErrorMsg("")
+        setErrorMsg('')
       }
 
       return !notMatch
     } else {
-      setErrorMsg("")
+      setErrorMsg('')
       return true
     }
   }, [])
@@ -128,7 +128,7 @@ const Input = (props: InputState, ref: any) => {
         <i
           className="icon icon-cross"
           onClick={(e) => {
-            doSetValue("")
+            doSetValue('')
             labelClick(e)
           }}
         />

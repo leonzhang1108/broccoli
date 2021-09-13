@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react"
-import Button from "@/components/button"
-import classnames from "classnames"
-import { bindKeyDown } from "@/utils"
-import "./index.less"
+import React, { useEffect, useState } from 'react'
+import Button from '@/components/button'
+import classnames from 'classnames'
+import { bindKeyDown } from '@/utils'
+import './index.less'
 
 interface DialogProps {
   children: React.ReactNode | Element
@@ -65,7 +65,7 @@ const Dialog = (props: DialogProps) => {
   }, [visible, loading, onConfirm])
 
   return innerVisible ? (
-    <div className={classnames("dialog-wrapper", { closing: isClosing })}>
+    <div className={classnames('dialog-wrapper', { closing: isClosing })}>
       <div className="dialog-content">
         <div className="dialog-title-wrapper">
           <span className="dialog-title">{title}</span>
@@ -74,7 +74,7 @@ const Dialog = (props: DialogProps) => {
         <div className="dialog-content-wrapper">{children}</div>
         <div className="dialog-btn-wrapper">
           <Button loading={loading} className="dialog-send" onClick={onConfirm}>
-            {confirmText || "Confirm"}
+            {confirmText || 'Confirm'}
           </Button>
           {errorMsg ? <div className="dialog-error">{errorMsg}</div> : null}
         </div>

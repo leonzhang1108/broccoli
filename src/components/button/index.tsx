@@ -1,6 +1,6 @@
-import React, { useCallback } from "react"
-import classnames from "classnames"
-import "./index.less"
+import React, { useCallback } from 'react'
+import classnames from 'classnames'
+import './index.less'
 
 interface ButtonProps {
   children: React.ReactChild
@@ -18,7 +18,7 @@ const Button = (props: ButtonProps) => {
 
   return (
     <div
-      className={classnames("button", className, { loading })}
+      className={classnames('button', className, { loading })}
       onClick={doOnClick}
     >
       {children}

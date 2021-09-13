@@ -1,35 +1,35 @@
 interface requestProps {
   url: string
   data: any
-  method: "GET" | "POST"
+  method: 'GET' | 'POST'
 }
 
 const obj2qs = function (obj: any) {
   const qs = []
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      qs.push(key + "=" + encodeURIComponent(obj[key]))
+      qs.push(key + '=' + encodeURIComponent(obj[key]))
     }
   }
-  return qs.join("&")
+  return qs.join('&')
 }
 
 export const request = ({ url, data, method }: requestProps) => {
   const xhr = new XMLHttpRequest()
   xhr.open(method, url)
-  xhr.responseType = "json"
+  xhr.responseType = 'json'
 
   switch (method) {
-    case "POST":
-      xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8")
+    case 'POST':
+      xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8')
       break
-    case "GET":
+    case 'GET':
       url += `&${obj2qs(data)}`
       break
   }
 
   return new Promise((resolve, reject) => {
-    xhr.addEventListener("load", () => {
+    xhr.addEventListener('load', () => {
       const { status } = xhr
       if ((status >= 200 && status < 300) || status === 304) {
         resolve(xhr.response)
@@ -37,11 +37,11 @@ export const request = ({ url, data, method }: requestProps) => {
         reject(xhr)
       }
     })
-    xhr.addEventListener("error", () => {
-      reject(new Error("network error"))
+    xhr.addEventListener('error', () => {
+      reject(new Error('network error'))
     })
-    xhr.addEventListener("abort", () => {
-      reject(new Error("request abort"))
+    xhr.addEventListener('abort', () => {
+      reject(new Error('request abort'))
     })
 
     xhr.send(JSON.stringify(data))
