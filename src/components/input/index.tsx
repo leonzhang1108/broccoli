@@ -17,6 +17,8 @@ interface rule {
   pattern?: RegExp
   exact?: string
   required?: boolean
+  max?: number
+  min?: number
   msg: string
 }
 
@@ -49,7 +51,7 @@ const Input = (props: InputState, ref: any) => {
 
     if (rules.length) {
       const notMatch = rules.some((rule: rule) => {
-        const { pattern, msg = "please enter value", exact } = rule
+        const { pattern, msg = "please enter value", exact, max, min } = rule
 
         // 正则匹配
         if (pattern && !pattern.test(v)) {
@@ -59,6 +61,18 @@ const Input = (props: InputState, ref: any) => {
 
         // 完全匹配
         if (exact && exact !== v) {
+          setErrorMsg(msg)
+          return true
+        }
+
+        // 长度匹配
+        if (max && min && (v.length <= min || v.length >= max)) {
+          setErrorMsg(msg)
+          return true
+        } else if (max && v.length >= max) {
+          setErrorMsg(msg)
+          return true
+        } else if (min && v.length <= min) {
           setErrorMsg(msg)
           return true
         }

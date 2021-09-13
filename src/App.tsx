@@ -3,7 +3,7 @@ import Layout from "@/components/app-layout"
 import Button from "@/components/button"
 import Dialog from "@/components/dialog"
 import Input from "@/components/input"
-import { requestPost } from "@/utils/api"
+import { request } from "@/utils/api"
 import { bindKeyDown } from "@/utils"
 import "./App.less"
 
@@ -19,6 +19,10 @@ const emailRules = [
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     msg: "Please enter valid email address",
   },
+  {
+    max: 50,
+    msg: "Your email address is too long",
+  },
 ]
 
 const fullNameRules = [
@@ -28,7 +32,11 @@ const fullNameRules = [
   },
   {
     pattern: /^.{3,}$/,
-    msg: "Full name must be longer than 2 characters",
+    msg: "Full name needs to be least 3 characters",
+  },
+  {
+    max: 25,
+    msg: "Your name is too long",
   },
 ]
 
@@ -71,22 +79,28 @@ const App = () => {
       .map((item: any) => item?.validateVal())
       .every((item: any) => item)
     if (pass) {
+      // set blur
+      ;(formRef?.current || []).forEach((item: any) => {
+        const { ref } = item || {}
+        ref?.current?.blur()
+      })
       const params = {
         name: formData.fullName,
         email: formData.email,
       }
       setRequestLoading(true)
-      requestPost({
+      request({
         url: "https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth",
         data: params,
+        method: "POST",
       })
-        .then((res) => {
+        .then((res: any) => {
           if (res === "Registered") {
             setDialogVisible(false)
             setSuccessDialogVisible(true)
           }
         })
-        .catch((error) => {
+        .catch((error: any) => {
           if (error instanceof Error) {
             setErrorMsg(error?.message)
           } else if (error instanceof XMLHttpRequest) {
@@ -109,6 +123,10 @@ const App = () => {
       {
         exact: formData.email,
         msg: "Please confirm your email address",
+      },
+      {
+        max: 50,
+        msg: "Your email address is too long",
       },
     ]
   }, [formData.email])
@@ -187,7 +205,7 @@ const App = () => {
             onConfirm={() => setSuccessDialogVisible(false)}
             onCancel={() => setSuccessDialogVisible(false)}
           >
-            <div style={{ textAlign: "center" }}>
+            <div style={{ textAlign: "center", width: "20rem" }}>
               You will be one of the first to experience Broccoli & Co. when we
               launch.
             </div>

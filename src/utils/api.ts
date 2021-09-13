@@ -1,8 +1,32 @@
-export const requestPost = ({ url, data }: any) => {
+interface requestProps {
+  url: string
+  data: any
+  method: "GET" | "POST"
+}
+
+const obj2qs = function (obj: any) {
+  const qs = []
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      qs.push(key + "=" + encodeURIComponent(obj[key]))
+    }
+  }
+  return qs.join("&")
+}
+
+export const request = ({ url, data, method }: requestProps) => {
   const xhr = new XMLHttpRequest()
-  xhr.open("POST", url)
+  xhr.open(method, url)
   xhr.responseType = "json"
-  xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8")
+
+  switch (method) {
+    case "POST":
+      xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8")
+      break
+    case "GET":
+      url += `&${obj2qs(data)}`
+      break
+  }
 
   return new Promise((resolve, reject) => {
     xhr.addEventListener("load", () => {
