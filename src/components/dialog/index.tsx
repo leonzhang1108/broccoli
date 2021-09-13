@@ -46,14 +46,14 @@ const Dialog = (props: DialogProps) => {
 
   // 绑定回车按钮
   useEffect(() => {
-    if (visible && !loading) {
+    if (visible) {
       bindKeyDown((e: any) => {
         switch (e.keyCode) {
           case 13:
-            onConfirm && onConfirm()
+            !loading && onConfirm && onConfirm()
             break
           case 27:
-            onCancel && onCancel()
+            !loading && onCancel && onCancel()
             break
           default:
         }
