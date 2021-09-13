@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Button from "@/components/button"
 import classnames from "classnames"
+import { bindKeyDown } from "@/utils"
 import "./index.less"
 
 interface DialogProps {
@@ -46,11 +47,17 @@ const Dialog = (props: DialogProps) => {
   // 绑定回车按钮
   useEffect(() => {
     if (visible && !loading) {
-      document.onkeydown = function (e: any) {
-        if (e.keyCode === 13) {
-          onConfirm && onConfirm()
+      bindKeyDown((e: any) => {
+        switch (e.keyCode) {
+          case 13:
+            onConfirm && onConfirm()
+            break
+          case 27:
+            onCancel && onCancel()
+            break
+          default:
         }
-      }
+      })
     }
     return () => {
       document.onkeydown = null

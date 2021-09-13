@@ -4,6 +4,7 @@ import Button from "@/components/button"
 import Dialog from "@/components/dialog"
 import Input from "@/components/input"
 import { requestPost } from "@/utils/api"
+import { bindKeyDown } from "@/utils"
 import "./App.less"
 
 const { Header, Footer, Content } = Layout
@@ -116,11 +117,14 @@ const App = () => {
   useEffect(() => {
     if (!dialogVisible && !successDialogVisible) {
       // 回车打开 form 对话框
-      document.onkeydown = function (e: any) {
-        if (e.keyCode === 13) {
-          openFormDialog()
+      bindKeyDown((e: any) => {
+        switch (e.keyCode) {
+          case 13:
+            openFormDialog()
+            break
+          default:
         }
-      }
+      })
     }
     return () => {
       document.onkeydown = null
