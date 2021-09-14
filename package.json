@@ -26,6 +26,10 @@
     "react-dom": "^17.0.0"
   },
   "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.15.4",
+    "@babel/preset-env": "^7.15.6",
+    "@babel/preset-react": "^7.14.5",
+    "@babel/preset-typescript": "^7.15.0",
     "@types/node": "^16.9.1",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
@@ -34,19 +38,35 @@
     "@vitejs/plugin-react-refresh": "^1.3.1",
     "autoprefixer": "^10.3.4",
     "babel-eslint": "^10.1.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "enzyme-to-json": "^3.6.2",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.25.1",
     "husky": "^7.0.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^27.2.0",
     "lint-staged": "^11.1.2",
     "prettier": "^2.4.0",
     "prettier-eslint": "^13.0.0",
+    "react-test-renderer": "^17.0.2",
     "stylelint": "^13.13.1",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^22.0.0",
     "typescript": "^4.3.2",
     "vite": "^2.5.4"
+  },
+  "jest": {
+    "setupFiles": [
+      "./test/jestsetup.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "moduleNameMapper": {
+      "^.+\\.(css|scss|less)$": "identity-obj-proxy"
+    }
   }
 }
