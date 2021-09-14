@@ -36,7 +36,7 @@ const Input = (props: InputState, ref: any) => {
   const [errorMsg, setErrorMsg] = useState('')
 
   const { required, msg: requiredMeg }: any = useMemo(() => {
-    return rules.find((item) => item.required)
+    return rules.find((item) => item.required) || {}
   }, [rules])
 
   const innerRules = useMemo(() => {

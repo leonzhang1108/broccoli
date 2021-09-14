@@ -57,16 +57,5 @@
     "stylelint-config-standard": "^22.0.0",
     "typescript": "^4.3.2",
     "vite": "^2.5.4"
-  },
-  "jest": {
-    "setupFiles": [
-      "./test/jestsetup.js"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "moduleNameMapper": {
-      "^.+\\.(css|scss|less)$": "identity-obj-proxy"
-    }
   }
 }

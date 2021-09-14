@@ -29,7 +29,7 @@ const Dialog = (props: DialogProps) => {
   } = props
 
   const [isClosing, setIsClosing] = useState(false)
-  const [innerVisible, setInnerVisible] = useState(false)
+  const [innerVisible, setInnerVisible] = useState(visible)
 
   useEffect(() => {
     if (visible) {
