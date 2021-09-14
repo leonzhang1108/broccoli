@@ -7,7 +7,7 @@ export const bindKeyDown = (func: any) => {
 
 export const debounce = (action: any, idle: number) => {
   let last: any = null
-  return () => {
+  return function () {
     clearTimeout(last)
     last = setTimeout(action, idle)
   }
