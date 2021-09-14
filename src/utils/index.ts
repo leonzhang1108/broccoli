@@ -4,3 +4,11 @@ export const bindKeyDown = (func: any) => {
     document.onkeydown = func
   }, 300)
 }
+
+export const debounce = (action: any, idle: number) => {
+  let last: any = null
+  return () => {
+    clearTimeout(last)
+    last = setTimeout(action, idle)
+  }
+}

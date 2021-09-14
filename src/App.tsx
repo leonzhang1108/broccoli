@@ -3,6 +3,7 @@ import Layout from '@/components/app-layout'
 import Button from '@/components/button'
 import Dialog from '@/components/dialog'
 import Input from '@/components/input'
+import Background from '@/components/background'
 import { request } from '@/utils/api'
 import { bindKeyDown } from '@/utils'
 import './App.less'
@@ -155,62 +156,64 @@ const App = () => {
         <div className="title">BROCCOLI & CO.</div>
       </Header>
       <Content>
-        <div className="main-content">
-          <div className="slogan">
-            <div>A better way</div>
-            <div>to enjoy every day. </div>
-          </div>
-          <div className="hint">Be the first to know when we launch. </div>
-          <Button onClick={openFormDialog}>Request an invite</Button>
-          <Dialog
-            title="Request an invite"
-            confirmText={requestLoading ? 'Sending, please wait...' : 'Send'}
-            visible={dialogVisible}
-            setVisible={setDialogVisible}
-            loading={requestLoading}
-            onConfirm={onConfirm}
-            onCancel={() => setDialogVisible(false)}
-            errorMsg={errorMsg}
-          >
-            <Input
-              ref={(el) => (formRef.current[0] = el)}
-              value={formData.fullName}
-              rules={fullNameRules}
-              placeholder="Full name"
-              type="text"
-              setValue={(v: any) => doSetFormData({ fullName: v })}
-            />
-            <Input
-              ref={(el) => (formRef.current[1] = el)}
-              value={formData.email}
-              rules={emailRules}
-              placeholder="Email"
-              type="text"
-              setValue={(v: any) => doSetFormData({ email: v })}
-            />
-            <Input
-              ref={(el) => (formRef.current[2] = el)}
-              value={formData.confirmEmail}
-              rules={confirmEmailRules}
-              placeholder="Confirm email"
-              type="text"
-              setValue={(v: any) => doSetFormData({ confirmEmail: v })}
-            />
-          </Dialog>
-          <Dialog
-            title="All done! "
-            confirmText="OK"
-            visible={successDialogVisible}
-            setVisible={setSuccessDialogVisible}
-            onConfirm={() => setSuccessDialogVisible(false)}
-            onCancel={() => setSuccessDialogVisible(false)}
-          >
-            <div style={{ textAlign: 'center', width: '20rem' }}>
-              You will be one of the first to experience Broccoli & Co. when we
-              launch.
+        <Background className="main-content-wrapper">
+          <div className="main-content">
+            <div className="slogan">
+              <div>A better way</div>
+              <div>to enjoy every day. </div>
             </div>
-          </Dialog>
-        </div>
+            <div className="hint">Be the first to know when we launch. </div>
+            <Button onClick={openFormDialog}>Request an invite</Button>
+            <Dialog
+              title="Request an invite"
+              confirmText={requestLoading ? 'Sending, please wait...' : 'Send'}
+              visible={dialogVisible}
+              setVisible={setDialogVisible}
+              loading={requestLoading}
+              onConfirm={onConfirm}
+              onCancel={() => setDialogVisible(false)}
+              errorMsg={errorMsg}
+            >
+              <Input
+                ref={(el) => (formRef.current[0] = el)}
+                value={formData.fullName}
+                rules={fullNameRules}
+                placeholder="Full name"
+                type="text"
+                setValue={(v: any) => doSetFormData({ fullName: v })}
+              />
+              <Input
+                ref={(el) => (formRef.current[1] = el)}
+                value={formData.email}
+                rules={emailRules}
+                placeholder="Email"
+                type="text"
+                setValue={(v: any) => doSetFormData({ email: v })}
+              />
+              <Input
+                ref={(el) => (formRef.current[2] = el)}
+                value={formData.confirmEmail}
+                rules={confirmEmailRules}
+                placeholder="Confirm email"
+                type="text"
+                setValue={(v: any) => doSetFormData({ confirmEmail: v })}
+              />
+            </Dialog>
+            <Dialog
+              title="All done! "
+              confirmText="OK"
+              visible={successDialogVisible}
+              setVisible={setSuccessDialogVisible}
+              onConfirm={() => setSuccessDialogVisible(false)}
+              onCancel={() => setSuccessDialogVisible(false)}
+            >
+              <div style={{ textAlign: 'center', width: '20rem' }}>
+                You will be one of the first to experience Broccoli & Co. when
+                we launch.
+              </div>
+            </Dialog>
+          </div>
+        </Background>
       </Content>
       <Footer>
         <div className="copy-right">
