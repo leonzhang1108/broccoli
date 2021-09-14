@@ -76,6 +76,7 @@ const App = () => {
 
   // 确认发送
   const onConfirm = useCallback(() => {
+    setErrorMsg('')
     const pass = formRef.current
       .map((item: any) => item?.validateVal())
       .every((item: any) => item)
