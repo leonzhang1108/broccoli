@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import classnames from 'classnames'
 import initWebGL from './webGL'
-import { debounce } from '@/utils'
+// import { debounce } from '@/utils'
 import './index.less'
 
 const Background = (props: any) => {
@@ -24,16 +24,19 @@ const Background = (props: any) => {
       })
     }
     onResize()
-    window.onresize = debounce(onResize, 300)
+    // window.onresize = debounce(onResize, 300)
     return () => {
       cancel.current && cancel.current()
-      window.onresize = null
+      // window.onresize = null
     }
   }, [])
 
   useEffect(() => {
-    cancel.current && cancel.current()
-    cancel.current = initWebGL(canvas.current, false)
+    const { height, width } = size
+    if (height && width) {
+      cancel.current && cancel.current()
+      cancel.current = initWebGL(canvas.current, false)
+    }
   }, [size])
 
   return (
