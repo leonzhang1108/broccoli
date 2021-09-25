@@ -13,7 +13,7 @@ const labelClick = (e: any) => {
   input && input.focus()
 }
 
-interface rule {
+interface Rule {
   pattern?: RegExp
   exact?: string
   required?: boolean
@@ -27,7 +27,7 @@ interface InputState {
   type: string
   setValue: any
   placeholder?: string
-  rules?: rule[]
+  rules?: Rule[]
 }
 
 const Input = (props: InputState, ref: any) => {
@@ -50,7 +50,7 @@ const Input = (props: InputState, ref: any) => {
     }
 
     if (rules.length) {
-      const notMatch = rules.some((rule: rule) => {
+      const notMatch = rules.some((rule: Rule) => {
         const { pattern, msg = 'please enter value', exact, max, min } = rule
 
         // 正则匹配

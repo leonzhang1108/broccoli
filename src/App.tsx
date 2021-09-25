@@ -32,7 +32,7 @@ const fullNameRules = [
     msg: 'Please enter your full name',
   },
   {
-    pattern: /^.{3,}$/,
+    min: 3,
     msg: 'Full name needs to be least 3 characters',
   },
   {
